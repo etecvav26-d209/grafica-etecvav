@@ -36,48 +36,42 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $erro = 'Usuário ou senha inválidos.';
     }
 }
+
+$tituloPagina = 'Entrar - Gráfica ETEC VAV';
+require_once __DIR__ . '/includes/header.php';
 ?>
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Gráfica ETEC VAV</title>
-</head>
-<body>
-    <main>
-        <h1>Gráfica ETEC Vasco Antônio Venchiarutti</h1>
-        <h2>Entrar</h2>
 
-        <?php if ($erro !== ''): ?>
-            <p role="alert"><?= htmlspecialchars($erro, ENT_QUOTES, 'UTF-8') ?></p>
-        <?php endif; ?>
+<h1>Gráfica ETEC Vasco Antônio Venchiarutti</h1>
+<h2>Entrar</h2>
 
-        <form method="post" action="login.php">
-            <div>
-                <label for="usuario">Usuário</label>
-                <input
-                    type="text"
-                    id="usuario"
-                    name="usuario"
-                    required
-                    autocomplete="username"
-                >
-            </div>
+<?php if ($erro !== ''): ?>
+    <p role="alert"><?= htmlspecialchars($erro, ENT_QUOTES, 'UTF-8') ?></p>
+<?php endif; ?>
 
-            <div>
-                <label for="senha">Senha</label>
-                <input
-                    type="password"
-                    id="senha"
-                    name="senha"
-                    required
-                    autocomplete="current-password"
-                >
-            </div>
+<form method="post" action="login.php">
+    <div>
+        <label for="usuario">Usuário</label>
+        <input
+            type="text"
+            id="usuario"
+            name="usuario"
+            required
+            autocomplete="username"
+        >
+    </div>
 
-            <button type="submit">Entrar</button>
-        </form>
-    </main>
-</body>
-</html>
+    <div>
+        <label for="senha">Senha</label>
+        <input
+            type="password"
+            id="senha"
+            name="senha"
+            required
+            autocomplete="current-password"
+        >
+    </div>
+
+    <button type="submit">Entrar</button>
+</form>
+
+<?php require_once __DIR__ . '/includes/footer.php'; ?>
