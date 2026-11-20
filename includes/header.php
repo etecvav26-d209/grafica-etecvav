@@ -27,11 +27,11 @@ $tituloPagina = $tituloPagina ?? 'Gráfica ETEC VAV';
         </a>
     <?php endif; ?>
 
-    <?php if (funcionarioPode('vendas.consultar') || funcionarioPode('vendas.registrar')): ?>
-        <a href="/grafica-etecvav/pages/vendas/listar.php">
-            Vendas
-        </a>
-    <?php endif; ?>
+    <?php if (funcionarioPode('vendas.consultar')): ?>
+    <a href="/grafica-etecvav/pages/vendas/listar.php">Vendas</a>
+<?php elseif (funcionarioPode('vendas.registrar')): ?>
+    <a href="/grafica-etecvav/pages/vendas/cadastrar.php">Registrar venda</a>
+<?php endif; ?>
 
     <?php if (funcionarioPode('produtos.consultar')): ?>
         <a href="/grafica-etecvav/pages/produtos/listar.php">
