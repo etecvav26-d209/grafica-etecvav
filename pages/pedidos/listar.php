@@ -10,6 +10,58 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 require_once __DIR__ . '/../../config/conexao.php';
 
+$erroServico = '';
+$nomeServico = '';
+$descricaoServico = '';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $acao = $_POST['acao'] ?? '';
+
+    if ($acao !== 'cadastrar_servico') {
+        http_response_code(400);
+        exit('Ação inválida.');
+    }
+
+    $nomeRecebido = $_POST['nome_servico'] ?? '';
+    $descricaoRecebida = $_POST['descricao_servico'] ?? '';
+
+    $nomeServico = is_string($nomeRecebido)
+        ? trim($nomeRecebido)
+        : '';
+
+    $descricaoServico = is_string($descricaoRecebida)
+        ? trim($descricaoRecebida)
+        : '';
+
+    if ($nomeServico === '') {
+        $erroServico = 'Informe o nome do serviço.';
+    } elseif (
+        preg_match('/\A.{1,100}\z/us', $nomeServico) !== 1
+        || preg_match('/\A.{0,255}\z/us', $descricaoServico) !== 1
+    ) {
+        $erroServico = 'Confira o tamanho do nome e da descrição.';
+    } else {
+        try {
+            $sqlCadastro = 'INSERT INTO servicos_impressao
+                                (nome, descricao)
+                            VALUES
+                                (:nome, :descricao)';
+
+            $consultaCadastro = $pdo->prepare($sqlCadastro);
+            $consultaCadastro->execute([
+                'nome' => $nomeServico,
+                'descricao' => $descricaoServico,
+            ]);
+
+            $_SESSION['mensagem_servico'] = 'Serviço cadastrado.';
+            header('Location: listar.php');
+            exit;
+        } catch (PDOException $erroBanco) {
+            $erroServico = 'Não foi possível cadastrar o serviço.';
+        }
+    }
+}
+
 $sql = 'SELECT
             p.id,
             p.nome_solicitante,
@@ -39,6 +91,9 @@ if (funcionarioPode('servicos.gerenciar')) {
     $servicos = $pdo->query($sqlServicos)->fetchAll();
 }
 
+$mensagemServico = $_SESSION['mensagem_servico'] ?? '';
+unset($_SESSION['mensagem_servico']);
+
 $tituloPagina = 'Pedidos - Gráfica ETEC VAV';
 require_once __DIR__ . '/../../includes/header.php';
 ?>
@@ -48,6 +103,65 @@ require_once __DIR__ . '/../../includes/header.php';
 <?php if (funcionarioPode('servicos.gerenciar')): ?>
     <section>
         <h2>Serviços de impressão</h2>
+
+        <?php if ($mensagemServico !== ''): ?>
+            <p role="status">
+                <?= htmlspecialchars(
+                    $mensagemServico,
+                    ENT_QUOTES,
+                    'UTF-8'
+                ) ?>
+            </p>
+        <?php endif; ?>
+
+        <?php if ($erroServico !== ''): ?>
+            <p role="alert">
+                <?= htmlspecialchars(
+                    $erroServico,
+                    ENT_QUOTES,
+                    'UTF-8'
+                ) ?>
+            </p>
+        <?php endif; ?>
+
+        <form method="post" action="listar.php">
+            <input
+                type="hidden"
+                name="acao"
+                value="cadastrar_servico"
+            >
+
+            <div>
+                <label for="nome_servico">Nome do serviço</label>
+                <input
+                    type="text"
+                    id="nome_servico"
+                    name="nome_servico"
+                    maxlength="100"
+                    value="<?= htmlspecialchars(
+                        $nomeServico,
+                        ENT_QUOTES,
+                        'UTF-8'
+                    ) ?>"
+                    required
+                >
+            </div>
+
+            <div>
+                <label for="descricao_servico">Descrição</label>
+                <textarea
+                    id="descricao_servico"
+                    name="descricao_servico"
+                    maxlength="255"
+                ><?= htmlspecialchars(
+                    $descricaoServico,
+                    ENT_QUOTES,
+                    'UTF-8'
+                ) ?></textarea>
+            </div>
+
+            <button type="submit">Cadastrar serviço</button>
+        </form>
 
         <?php if (count($servicos) === 0): ?>
             <p>Nenhum serviço cadastrado.</p>
