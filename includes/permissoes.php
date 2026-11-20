@@ -15,6 +15,7 @@ $permissoesPorPerfil = [
         'estoque.consultar',
         'estoque.gerenciar',
         'reservas.consultar',
+        'reservas.gerenciar',
         'reservas.solicitar',
         'manutencoes.consultar',
         'manutencoes.registrar',

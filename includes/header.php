@@ -45,11 +45,15 @@ $tituloPagina = $tituloPagina ?? 'Gráfica ETEC VAV';
         </a>
     <?php endif; ?>
 
-    <?php if (funcionarioPode('reservas.consultar') || funcionarioPode('reservas.solicitar')): ?>
-        <a href="/grafica-etecvav/pages/armarios/reservas.php">
-            Reservas
-        </a>
-    <?php endif; ?>
+    <?php if (funcionarioPode('reservas.consultar')): ?>
+    <a href="/grafica-etecvav/pages/armarios/reservas.php">
+        Reservas
+    </a>
+<?php elseif (funcionarioPode('reservas.solicitar')): ?>
+    <a href="/grafica-etecvav/pages/armarios/cadastrar_reserva.php">
+        Solicitar reserva
+    </a>
+<?php endif; ?>
 
     <?php if (funcionarioPode('manutencoes.consultar') || funcionarioPode('manutencoes.registrar')): ?>
         <a href="/grafica-etecvav/pages/manutencoes/listar.php">
