@@ -70,10 +70,21 @@ require_once __DIR__ . '/../../includes/header.php';
                             'UTF-8'
                         ) ?>
                     </td>
-                    <td>
+                   <td>
                         <a href="editar.php?id=<?= (int) $funcionario['id'] ?>">
                             Editar
                         </a>
+
+                        <?php if ((int) $funcionario['ativo'] === 1): ?>
+                            <form method="post" action="desativar.php">
+                                <input
+                                    type="hidden"
+                                    name="id"
+                                    value="<?= (int) $funcionario['id'] ?>"
+                                >
+                                <button type="submit">Desativar</button>
+                            </form>
+                        <?php endif; ?>
                     </td>
                 </tr>
             <?php endforeach; ?>
