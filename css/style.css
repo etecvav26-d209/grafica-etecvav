@@ -85,3 +85,15 @@ a {
     background-color: #fce8e8;
     color: #821515;
 }
+
+.navegacao {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #d1d1d1;
+}
+
+.navegacao a {
+    font-weight: bold;
+}

@@ -11,4 +11,11 @@ $tituloPagina = $tituloPagina ?? 'Gráfica ETEC VAV';
     <link rel="stylesheet" href="/grafica-etecvav/css/style.css">
 </head>
 <body>
+    <?php if (isset($_SESSION['funcionario_id'])): ?>
+        <nav class="navegacao" aria-label="Navegação principal">
+            <a href="/grafica-etecvav/index.php">Início</a>
+            <a href="/grafica-etecvav/logout.php">Sair</a>
+        </nav>
+    <?php endif; ?>
+
     <main>
