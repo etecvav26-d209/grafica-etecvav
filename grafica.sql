@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 20/11/2026 às 01:30
+-- Tempo de geração: 20/11/2026 às 03:20
 -- Versão do servidor: 10.4.32-MariaDB
 -- Versão do PHP: 8.2.12
 
@@ -271,6 +271,13 @@ CREATE TABLE `funcionarios` (
   `data_cadastro` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Despejando dados para a tabela `funcionarios`
+--
+
+INSERT INTO `funcionarios` (`id`, `nome`, `usuario`, `senha_hash`, `perfil`, `ativo`, `data_cadastro`) VALUES
+(1, 'Administrador de teste', 'admin', '$2y$10$pE6a6kNaegCE4trw/uXdM.FfZiSwcWhvlxlWwPxAeJqofws6IfwcK', 'administrador', 1, '2026-11-20 02:19:12');
+
 -- --------------------------------------------------------
 
 --
@@ -529,7 +536,7 @@ ALTER TABLE `armario`
 -- AUTO_INCREMENT de tabela `funcionarios`
 --
 ALTER TABLE `funcionarios`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de tabela `itens_venda`
