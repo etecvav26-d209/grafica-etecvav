@@ -32,6 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($nome === '' || $usuario === '' || $senha === '' || $perfil === '') {
         $erro = 'Preencha todos os campos.';
     } elseif (
+        //adiciona os limites ao tamanho do texto
         preg_match('/\A.{1,100}\z/us', $nome) !== 1
         || preg_match('/\A.{1,50}\z/us', $usuario) !== 1
     ) {
