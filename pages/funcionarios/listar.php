@@ -30,7 +30,7 @@ require_once __DIR__ . '/../../includes/header.php';
                 <th scope="col">Usuário</th>
                 <th scope="col">Perfil</th>
                 <th scope="col">Situação</th>
-                <th scope="col">Data de cadastro</th>
+                <th scope="col">Cadastro/última alteração</th>
                 <th scope="col">Ações</th>
             </tr>
         </thead>
