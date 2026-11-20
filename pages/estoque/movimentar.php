@@ -2,4 +2,4 @@
 
 require_once __DIR__ . '/../../includes/permissoes.php';
 
-exigirPermissao('estoque.consultar');
+exigirPermissao('estoque.gerenciar');
