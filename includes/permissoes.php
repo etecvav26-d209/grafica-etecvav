@@ -21,6 +21,7 @@ $permissoesPorPerfil = [
         'manutencoes.registrar',
         'manutencoes.atualizar',
         'relatorios.consultar',
+        'relatorios.gerar',
     ],
     'gerente' => [
         'pedidos.consultar',
@@ -31,6 +32,7 @@ $permissoesPorPerfil = [
         'reservas.consultar',
         'manutencoes.consultar',
         'relatorios.consultar',
+        'relatorios.gerar',
     ],
     'atendente' => [
         'pedidos.consultar',
