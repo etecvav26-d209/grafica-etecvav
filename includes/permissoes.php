@@ -8,6 +8,7 @@ $permissoesPorPerfil = [
         'pedidos.consultar',
         'pedidos.cadastrar',
         'pedidos.atualizar_status',
+        'servicos.gerenciar',
         'vendas.consultar',
         'vendas.registrar',
         'produtos.consultar',
@@ -22,7 +23,6 @@ $permissoesPorPerfil = [
         'manutencoes.atualizar',
         'relatorios.consultar',
         'relatorios.gerar',
-        'servicos.gerenciar',
     ],
     'gerente' => [
         'pedidos.consultar',

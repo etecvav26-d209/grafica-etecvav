@@ -4,6 +4,10 @@ require_once __DIR__ . '/../../includes/permissoes.php';
 
 exigirPermissao('pedidos.consultar');
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    exigirPermissao('servicos.gerenciar');
+}
+
 require_once __DIR__ . '/../../config/conexao.php';
 
 $sql = 'SELECT
