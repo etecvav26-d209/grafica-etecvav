@@ -60,6 +60,9 @@ require_once __DIR__ . '/../../includes/header.php';
                 <th>Estoque atual</th>
                 <th>Estoque mínimo</th>
                 <th>Situação</th>
+                <?php if (funcionarioPode('produtos.editar')): ?>
+                    <th>Ações</th>
+                <?php endif; ?>
             </tr>
         </thead>
         <tbody>
@@ -105,6 +108,14 @@ require_once __DIR__ . '/../../includes/header.php';
                             — Estoque baixo
                         <?php endif; ?>
                     </td>
+
+                    <?php if (funcionarioPode('produtos.editar')): ?>
+                        <td>
+                            <a href="editar.php?id=<?= (int) $produto['id'] ?>">
+                                Editar
+                            </a>
+                        </td>
+                    <?php endif; ?>
                 </tr>
             <?php endforeach; ?>
         </tbody>
