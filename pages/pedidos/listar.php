@@ -54,6 +54,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ]);
 
             $_SESSION['mensagem_servico'] = 'Serviço cadastrado.';
+            $mensagemPedido = $_SESSION['mensagem_pedido'] ?? '';
+            unset($_SESSION['mensagem_pedido']);
             header('Location: listar.php');
             exit;
         } catch (PDOException $erroBanco) {
@@ -99,6 +101,22 @@ require_once __DIR__ . '/../../includes/header.php';
 ?>
 
 <h1>Pedidos de impressão</h1>
+
+<?php if ($mensagemPedido !== ''): ?>
+    <p role="status">
+        <?= htmlspecialchars(
+            $mensagemPedido,
+            ENT_QUOTES,
+            'UTF-8'
+        ) ?>
+    </p>
+<?php endif; ?>
+
+<?php if (funcionarioPode('pedidos.cadastrar')): ?>
+    <p>
+        <a href="cadastrar.php">Cadastrar pedido</a>
+    </p>
+<?php endif; ?>
 
 <?php if (funcionarioPode('servicos.gerenciar')): ?>
     <section>
