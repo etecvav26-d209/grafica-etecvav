@@ -19,6 +19,9 @@ $sql = 'SELECT
 
 $produtos = $pdo->query($sql)->fetchAll();
 
+$mensagemProduto = $_SESSION['mensagem_produto'] ?? '';
+unset($_SESSION['mensagem_produto']);
+
 $consultaEstoquePermitida =
     funcionarioPode('estoque.consultar')
     || funcionarioPode('estoque.gerenciar');
@@ -28,6 +31,22 @@ require_once __DIR__ . '/../../includes/header.php';
 ?>
 
 <h1>Produtos</h1>
+
+<?php if ($mensagemProduto !== ''): ?>
+    <p role="status">
+        <?= htmlspecialchars(
+            $mensagemProduto,
+            ENT_QUOTES,
+            'UTF-8'
+        ) ?>
+    </p>
+<?php endif; ?>
+
+<?php if (funcionarioPode('produtos.editar')): ?>
+    <p>
+        <a href="cadastrar.php">Cadastrar produto</a>
+    </p>
+<?php endif; ?>
 
 <?php if (count($produtos) === 0): ?>
     <p>Nenhum produto cadastrado.</p>
