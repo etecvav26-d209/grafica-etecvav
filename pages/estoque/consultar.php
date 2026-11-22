@@ -30,6 +30,23 @@ foreach ($produtos as $produto) {
     }
 }
 
+$sqlMovimentacoes = 'SELECT
+                         m.id,
+                         m.data_movimentacao,
+                         m.tipo,
+                         m.quantidade,
+                         m.motivo,
+                         p.nome AS produto,
+                         f.nome AS funcionario
+                     FROM movimentacoes_estoque m
+                     INNER JOIN produtos p
+                         ON p.id = m.produto_id
+                     INNER JOIN funcionarios f
+                         ON f.id = m.funcionario_id
+                     ORDER BY m.data_movimentacao DESC, m.id DESC';
+
+$movimentacoes = $pdo->query($sqlMovimentacoes)->fetchAll();
+
 $mensagemEstoque = $_SESSION['mensagem_estoque'] ?? '';
 unset($_SESSION['mensagem_estoque']);
 
@@ -59,6 +76,8 @@ require_once __DIR__ . '/../../includes/header.php';
     Produtos ativos com estoque igual ou abaixo do mínimo:
     <?= $quantidadeEstoqueBaixo ?>
 </p>
+
+<h2>Saldos dos produtos</h2>
 
 <?php if (count($produtos) === 0): ?>
     <p>Nenhum produto cadastrado.</p>
@@ -106,6 +125,67 @@ require_once __DIR__ . '/../../includes/header.php';
                         <?= $estoqueBaixo
                             ? 'Estoque baixo'
                             : 'Dentro do mínimo' ?>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+<?php endif; ?>
+
+<h2>Histórico de movimentações</h2>
+
+<?php if (count($movimentacoes) === 0): ?>
+    <p>Nenhuma movimentação registrada.</p>
+<?php else: ?>
+    <table>
+        <thead>
+            <tr>
+                <th>Data</th>
+                <th>Produto</th>
+                <th>Tipo</th>
+                <th>Quantidade</th>
+                <th>Motivo</th>
+                <th>Funcionário</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($movimentacoes as $movimentacao): ?>
+                <tr>
+                    <td>
+                        <?= htmlspecialchars(
+                            $movimentacao['data_movimentacao'],
+                            ENT_QUOTES,
+                            'UTF-8'
+                        ) ?>
+                    </td>
+                    <td>
+                        <?= htmlspecialchars(
+                            $movimentacao['produto'],
+                            ENT_QUOTES,
+                            'UTF-8'
+                        ) ?>
+                    </td>
+                    <td>
+                        <?= htmlspecialchars(
+                            $movimentacao['tipo'],
+                            ENT_QUOTES,
+                            'UTF-8'
+                        ) ?>
+                    </td>
+                    <td><?= (int) $movimentacao['quantidade'] ?></td>
+                    <td>
+                        <?= htmlspecialchars(
+                            $movimentacao['motivo'] ?? 'Não informado',
+                            ENT_QUOTES,
+                            'UTF-8'
+                        ) ?>
+                    </td>
+                    <td>
+                        <?= htmlspecialchars(
+                            $movimentacao['funcionario'],
+                            ENT_QUOTES,
+                            'UTF-8'
+                        ) ?>
                     </td>
                 </tr>
             <?php endforeach; ?>
