@@ -51,11 +51,24 @@ foreach ($linhas as $linha) {
     }
 }
 
+$mensagemVenda = $_SESSION['mensagem_venda'] ?? '';
+unset($_SESSION['mensagem_venda']);
+
 $tituloPagina = 'Vendas - Gráfica ETEC VAV';
 require_once __DIR__ . '/../../includes/header.php';
 ?>
 
 <h1>Vendas</h1>
+
+<?php if ($mensagemVenda !== ''): ?>
+    <p role="status">
+        <?= htmlspecialchars(
+            $mensagemVenda,
+            ENT_QUOTES,
+            'UTF-8'
+        ) ?>
+    </p>
+<?php endif; ?>
 
 <?php if (funcionarioPode('vendas.registrar')): ?>
     <p>
