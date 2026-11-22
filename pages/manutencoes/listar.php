@@ -20,11 +20,30 @@ $sql = 'SELECT
 
 $manutencoes = $pdo->query($sql)->fetchAll();
 
+$mensagemManutencao = $_SESSION['mensagem_manutencao'] ?? '';
+unset($_SESSION['mensagem_manutencao']);
+
 $tituloPagina = 'Manutenções - Gráfica ETEC VAV';
 require_once __DIR__ . '/../../includes/header.php';
 ?>
 
 <h1>Manutenções</h1>
+
+<?php if ($mensagemManutencao !== ''): ?>
+    <p role="status">
+        <?= htmlspecialchars(
+            $mensagemManutencao,
+            ENT_QUOTES,
+            'UTF-8'
+        ) ?>
+    </p>
+<?php endif; ?>
+
+<?php if (funcionarioPode('manutencoes.registrar')): ?>
+    <p>
+        <a href="cadastrar.php">Registrar ocorrência</a>
+    </p>
+<?php endif; ?>
 
 <?php if (count($manutencoes) === 0): ?>
     <p>Nenhuma ocorrência de manutenção registrada.</p>
