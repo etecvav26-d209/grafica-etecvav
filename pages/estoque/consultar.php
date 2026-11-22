@@ -30,11 +30,30 @@ foreach ($produtos as $produto) {
     }
 }
 
+$mensagemEstoque = $_SESSION['mensagem_estoque'] ?? '';
+unset($_SESSION['mensagem_estoque']);
+
 $tituloPagina = 'Consulta de estoque - Gráfica ETEC VAV';
 require_once __DIR__ . '/../../includes/header.php';
 ?>
 
 <h1>Estoque</h1>
+
+<?php if ($mensagemEstoque !== ''): ?>
+    <p role="status">
+        <?= htmlspecialchars(
+            $mensagemEstoque,
+            ENT_QUOTES,
+            'UTF-8'
+        ) ?>
+    </p>
+<?php endif; ?>
+
+<?php if (funcionarioPode('estoque.gerenciar')): ?>
+    <p>
+        <a href="movimentar.php">Movimentar estoque</a>
+    </p>
+<?php endif; ?>
 
 <p>
     Produtos ativos com estoque igual ou abaixo do mínimo:
