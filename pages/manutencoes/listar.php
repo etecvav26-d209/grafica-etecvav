@@ -96,6 +96,38 @@ require_once __DIR__ . '/../../includes/header.php';
                     ) ?>
                 </dd>
             </dl>
+
+            <?php if (funcionarioPode('manutencoes.atualizar')): ?>
+                <form method="post" action="atualizar.php">
+                    <input
+                        type="hidden"
+                        name="manutencao_id"
+                        value="<?= (int) $manutencao['id'] ?>"
+                    >
+
+                    <div>
+                        <label for="status_<?= (int) $manutencao['id'] ?>">
+                            Atualizar andamento
+                        </label>
+
+                        <select
+                            id="status_<?= (int) $manutencao['id'] ?>"
+                            name="status"
+                            required
+                        >
+                            <option value="">Selecione o novo status</option>
+                            <option value="em andamento">
+                                Em andamento
+                            </option>
+                            <option value="concluída">
+                                Concluída
+                            </option>
+                        </select>
+                    </div>
+
+                    <button type="submit">Salvar andamento</button>
+                </form>
+            <?php endif; ?>
         </section>
     <?php endforeach; ?>
 <?php endif; ?>
