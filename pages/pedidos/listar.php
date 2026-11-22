@@ -54,8 +54,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ]);
 
             $_SESSION['mensagem_servico'] = 'Serviço cadastrado.';
-            $mensagemPedido = $_SESSION['mensagem_pedido'] ?? '';
-            unset($_SESSION['mensagem_pedido']);
             header('Location: listar.php');
             exit;
         } catch (PDOException $erroBanco) {
@@ -96,6 +94,12 @@ if (funcionarioPode('servicos.gerenciar')) {
 $mensagemServico = $_SESSION['mensagem_servico'] ?? '';
 unset($_SESSION['mensagem_servico']);
 
+$mensagemPedido = $_SESSION['mensagem_pedido'] ?? '';
+unset($_SESSION['mensagem_pedido']);
+
+$mensagemStatus = $_SESSION['mensagem_status_pedido'] ?? '';
+unset($_SESSION['mensagem_status_pedido']);
+
 $tituloPagina = 'Pedidos - Gráfica ETEC VAV';
 require_once __DIR__ . '/../../includes/header.php';
 ?>
@@ -106,6 +110,16 @@ require_once __DIR__ . '/../../includes/header.php';
     <p role="status">
         <?= htmlspecialchars(
             $mensagemPedido,
+            ENT_QUOTES,
+            'UTF-8'
+        ) ?>
+    </p>
+<?php endif; ?>
+
+<?php if ($mensagemStatus !== ''): ?>
+    <p role="status">
+        <?= htmlspecialchars(
+            $mensagemStatus,
             ENT_QUOTES,
             'UTF-8'
         ) ?>
@@ -171,6 +185,7 @@ require_once __DIR__ . '/../../includes/header.php';
                     id="descricao_servico"
                     name="descricao_servico"
                     maxlength="255"
+                    required
                 ><?= htmlspecialchars(
                     $descricaoServico,
                     ENT_QUOTES,
@@ -219,35 +234,124 @@ require_once __DIR__ . '/../../includes/header.php';
 
             <dl>
                 <dt>Solicitante</dt>
-                <dd><?= htmlspecialchars($pedido['nome_solicitante'], ENT_QUOTES, 'UTF-8') ?></dd>
+                <dd>
+                    <?= htmlspecialchars(
+                        $pedido['nome_solicitante'],
+                        ENT_QUOTES,
+                        'UTF-8'
+                    ) ?>
+                </dd>
 
                 <dt>Sala</dt>
-                <dd><?= htmlspecialchars($pedido['sala'] ?? 'Não informada', ENT_QUOTES, 'UTF-8') ?></dd>
+                <dd>
+                    <?= htmlspecialchars(
+                        $pedido['sala'] ?? 'Não informada',
+                        ENT_QUOTES,
+                        'UTF-8'
+                    ) ?>
+                </dd>
 
                 <dt>Curso ou cargo</dt>
-                <dd><?= htmlspecialchars($pedido['curso_cargo'] ?? 'Não informado', ENT_QUOTES, 'UTF-8') ?></dd>
+                <dd>
+                    <?= htmlspecialchars(
+                        $pedido['curso_cargo'] ?? 'Não informado',
+                        ENT_QUOTES,
+                        'UTF-8'
+                    ) ?>
+                </dd>
 
                 <dt>Serviço</dt>
-                <dd><?= htmlspecialchars($pedido['servico'], ENT_QUOTES, 'UTF-8') ?></dd>
+                <dd>
+                    <?= htmlspecialchars(
+                        $pedido['servico'],
+                        ENT_QUOTES,
+                        'UTF-8'
+                    ) ?>
+                </dd>
 
                 <dt>Quantidade</dt>
                 <dd><?= (int) $pedido['quantidade'] ?></dd>
 
                 <dt>Formato</dt>
-                <dd><?= htmlspecialchars($pedido['formato'] ?? 'Não informado', ENT_QUOTES, 'UTF-8') ?></dd>
+                <dd>
+                    <?= htmlspecialchars(
+                        $pedido['formato'] ?? 'Não informado',
+                        ENT_QUOTES,
+                        'UTF-8'
+                    ) ?>
+                </dd>
 
                 <dt>Prazo</dt>
-                <dd><?= htmlspecialchars($pedido['prazo'] ?? 'Não definido', ENT_QUOTES, 'UTF-8') ?></dd>
+                <dd>
+                    <?= htmlspecialchars(
+                        $pedido['prazo'] ?? 'Não definido',
+                        ENT_QUOTES,
+                        'UTF-8'
+                    ) ?>
+                </dd>
 
                 <dt>Valor cobrado</dt>
-                <dd><?= number_format((float) $pedido['valor_cobrado'], 2, ',', '.') ?></dd>
+                <dd>
+                    <?= number_format(
+                        (float) $pedido['valor_cobrado'],
+                        2,
+                        ',',
+                        '.'
+                    ) ?>
+                </dd>
 
                 <dt>Status</dt>
-                <dd><?= htmlspecialchars($pedido['status'], ENT_QUOTES, 'UTF-8') ?></dd>
+                <dd>
+                    <?= htmlspecialchars(
+                        $pedido['status'],
+                        ENT_QUOTES,
+                        'UTF-8'
+                    ) ?>
+                </dd>
 
                 <dt>Funcionário responsável</dt>
-                <dd><?= htmlspecialchars($pedido['funcionario_responsavel'], ENT_QUOTES, 'UTF-8') ?></dd>
+                <dd>
+                    <?= htmlspecialchars(
+                        $pedido['funcionario_responsavel'],
+                        ENT_QUOTES,
+                        'UTF-8'
+                    ) ?>
+                </dd>
             </dl>
+
+            <?php if (funcionarioPode('pedidos.atualizar_status')): ?>
+                <form method="post" action="atualizar.php">
+                    <input
+                        type="hidden"
+                        name="pedido_id"
+                        value="<?= (int) $pedido['id'] ?>"
+                    >
+
+                    <div>
+                        <label for="status_<?= (int) $pedido['id'] ?>">
+                            Atualizar status
+                        </label>
+
+                        <select
+                            id="status_<?= (int) $pedido['id'] ?>"
+                            name="status"
+                            required
+                        >
+                            <option value="em produção">
+                                Em produção
+                            </option>
+                            <option value="pronto">
+                                Pronto
+                            </option>
+                            <option value="entregue">
+                                Entregue
+                            </option>
+                        </select>
+                    </div>
+
+                    <button type="submit">Salvar status</button>
+                </form>
+            <?php endif; ?>
         </section>
     <?php endforeach; ?>
 <?php endif; ?>
