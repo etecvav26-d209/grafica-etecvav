@@ -274,7 +274,7 @@ CREATE TABLE `funcionarios` (
 --
 -- Despejando dados para a tabela `funcionarios`
 --
-
+-- PARA ACESSAR O SITE INICIALMENTE! USUARIO: admin SENHA: adm
 INSERT INTO `funcionarios` (`id`, `nome`, `usuario`, `senha_hash`, `perfil`, `ativo`, `data_cadastro`) VALUES
 (1, 'Administrador de teste', 'admin', '$2y$10$pE6a6kNaegCE4trw/uXdM.FfZiSwcWhvlxlWwPxAeJqofws6IfwcK', 'administrador', 1, '2026-11-20 02:19:12');
 
